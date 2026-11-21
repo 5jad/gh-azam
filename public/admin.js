@@ -354,15 +354,18 @@
   // ── Product Tab ────────────────────────────────────────────────────────────
 
   async function loadProduct() {
-    if (productData) { renderProductForm(productData); return; }
     const r = await fetch("/api/admin/product").catch(() => null);
     if (!r || !r.ok) { toast("خطأ في تحميل المنتج", "error"); return; }
-    productData = await r.json();
-    discounts = productData.quantity_discounts ? JSON.parse(productData.quantity_discounts) : [];
-    reviews = productData.reviews_json ? JSON.parse(productData.reviews_json) : [];
-    imageOrder = [];
+    const resData = await r.json();
+    productData = resData.product || resData;
+    if (!productData || !productData.id) {
+      productData = { id: 1, is_active: 1, name_ar: "عطور عزام الشمري", price: 45000, stock: 20 };
+    }
+    discounts = productData.quantity_discounts ? (typeof productData.quantity_discounts === "string" ? JSON.parse(productData.quantity_discounts) : productData.quantity_discounts) : [];
+    reviews = productData.reviews_json ? (typeof productData.reviews_json === "string" ? JSON.parse(productData.reviews_json) : productData.reviews_json) : [];
+    imageOrder = (resData.images || []).map(i => i.id);
     renderProductForm(productData);
-    loadProductImages(productData.id);
+    renderImageGrid(resData.images || []);
   }
 
   function renderProductForm(p) {
@@ -577,7 +580,7 @@
   }
 
   async function reloadImages() {
-    const r = await fetch("/api/products").catch(() => null);
+    const r = await fetch("/api/admin/product").catch(() => null);
     if (!r || !r.ok) return;
     const d = await r.json();
     const imgs = d.images || [];
@@ -590,32 +593,54 @@
     const files = Array.from(e.target.files);
     if (!files.length) return;
     const status = document.getElementById("img-upload-status");
-    status.textContent = "جارٍ ضغط ورفع الصور…";
+    status.textContent = "جارٍ تحضير ورفع الصور…";
+
+    const prodId = productData?.id || 1;
 
     for (const file of files) {
-      if (imageOrder.length >= 8) { status.textContent = "الحد الأقصى 8 صور"; break; }
+      if (imageOrder.length >= 8) {
+        status.textContent = "الحد الأقصى 8 صور";
+        toast("الحد الأقصى هو 8 صور", "error");
+        break;
+      }
       try {
-        const blob = await compressImage(file);
-        if (blob.size > 450 * 1024) {
-          status.textContent = `الصورة كبيرة جداً حتى بعد الضغط (${Math.round(blob.size/1024)}KB)`;
-          continue;
-        }
-        const fd = new FormData();
-        fd.append("image", blob, "photo.webp");
-        if (productData?.id) {
-          const r = await fetch(`/api/admin/products/${productData.id}/images`, { method: "POST", body: fd });
-          if (r.ok) {
-            const d = await r.json();
-            imageOrder.push(d.id);
-            await reloadImages();
-            status.textContent = "✓ تم الرفع";
+        let blob;
+        try {
+          blob = await compressImage(file);
+        } catch (compErr) {
+          console.warn("Client compression failed, using original file:", compErr);
+          if (file.size <= 450 * 1024) {
+            blob = file;
           } else {
-            const er = await r.json().catch(() => ({}));
-            status.textContent = "خطأ: " + (er.error || "فشل الرفع");
+            throw new Error(`حجم الصورة (${Math.round(file.size/1024)}KB) أكبر من الحد المسموح`);
           }
         }
+
+        if (blob.size > 450 * 1024) {
+          status.textContent = `الصورة كبيرة جداً حتى بعد الضغط (${Math.round(blob.size/1024)}KB)`;
+          toast(`الصورة ${file.name} كبيرة جداً (أكثر من 450KB)`, "error");
+          continue;
+        }
+
+        const fd = new FormData();
+        fd.append("image", blob, file.name || "photo.webp");
+
+        const r = await fetch(`/api/admin/products/${prodId}/images`, { method: "POST", body: fd });
+        if (r.ok) {
+          const d = await r.json();
+          imageOrder.push(d.id || d.imageId);
+          await reloadImages();
+          status.textContent = "✓ تم الرفع بنجاح";
+          toast("تم رفع الصورة بنجاح ✓", "success");
+        } else {
+          const er = await r.json().catch(() => ({}));
+          const errMsg = er.error || "فشل الرفع";
+          status.textContent = "خطأ: " + errMsg;
+          toast("خطأ: " + errMsg, "error");
+        }
       } catch (err) {
-        status.textContent = "خطأ في الضغط: " + err.message;
+        status.textContent = "خطأ: " + err.message;
+        toast("خطأ: " + err.message, "error");
       }
     }
     e.target.value = "";

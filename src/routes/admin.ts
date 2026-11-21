@@ -303,7 +303,19 @@ admin.post("/api/admin/products/:id", async (c) => {
  * Image upload (BLOB into D1 product_images)
  */
 admin.post("/api/admin/products/:id/images", async (c) => {
-  const productId = parseInt(c.req.param("id"), 10);
+  let productId = parseInt(c.req.param("id"), 10);
+  const products = await getProducts(c.env.DB);
+  if (!products.length) {
+    const insertRes = await c.env.DB
+      .prepare(
+        "INSERT INTO products (slug, name_ar, price, stock, active) VALUES ('perfume-1', 'عطور عزام الشمري', 45000, 20, 1)"
+      )
+      .run();
+    productId = insertRes.meta.last_row_id;
+  } else if (!productId || isNaN(productId)) {
+    productId = products[0].id;
+  }
+
   const currentImages = await getProductImagesList(c.env.DB, productId);
   if (currentImages.length >= TECHNICAL_CONFIG.maxImagesPerProduct) {
     return c.json({ ok: false, error: `الحد الأقصى للصور هو ${TECHNICAL_CONFIG.maxImagesPerProduct} صور` }, 400);
@@ -316,8 +328,9 @@ admin.post("/api/admin/products/:id/images", async (c) => {
     return c.json({ ok: false, error: "لم يتم تحديد أي ملف" }, 400);
   }
 
-  const mime = file.type || "image/webp";
-  const validMimes = ["image/webp", "image/jpeg", "image/png"];
+  let mime = file.type || "image/webp";
+  if (mime === "image/jpg") mime = "image/jpeg";
+  const validMimes = ["image/webp", "image/jpeg", "image/png", "image/jpg", "image/avif"];
   if (!validMimes.includes(mime)) {
     return c.json({ ok: false, error: "صيغة الصورة غير مدعومة (فقط WebP, JPEG, PNG)" }, 400);
   }
