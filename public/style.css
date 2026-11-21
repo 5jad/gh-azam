@@ -13,10 +13,17 @@
   --text-secondary: #6e6e73;
   --text-tertiary: #86868b;
   
-  --accent: #0071e3;
-  --accent-hover: #0077ed;
-  --accent-active: #005bb5;
-  --accent-tint: rgba(0, 113, 227, 0.08);
+  /* Brand Luxury Palette */
+  --brand-navy: #040c3a;
+  --brand-bronze: #5d5943;
+
+  --accent: #040c3a;
+  --accent-hover: #081659;
+  --accent-active: #020720;
+  --accent-tint: rgba(4, 12, 58, 0.06);
+
+  --secondary-accent: #5d5943;
+  --secondary-accent-tint: rgba(93, 89, 67, 0.10);
 
   --success: #34c759;
   --success-tint: rgba(52, 199, 89, 0.12);
@@ -310,8 +317,8 @@ header.navbar {
 }
 
 .price-discount-pill {
-  background: var(--accent-tint);
-  color: var(--accent);
+  background: var(--secondary-accent-tint);
+  color: var(--secondary-accent);
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.25rem 0.65rem;
@@ -354,13 +361,13 @@ header.navbar {
   transition: var(--transition-fast);
   cursor: pointer;
   border: none;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.25);
+  box-shadow: 0 4px 14px rgba(4, 12, 58, 0.22);
 }
 
 .btn-primary-pill:hover {
   background: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 113, 227, 0.35);
+  box-shadow: 0 6px 20px rgba(4, 12, 58, 0.32);
 }
 
 .btn-primary-pill:active {
@@ -390,7 +397,7 @@ header.navbar {
 }
 
 .trust-item svg {
-  color: var(--accent);
+  color: var(--secondary-accent);
 }
 
 /* ==========================================================================
@@ -462,8 +469,8 @@ header.navbar {
 }
 
 .note-chip {
-  background: var(--bg-surface);
-  color: var(--text-secondary);
+  background: var(--secondary-accent-tint);
+  color: var(--secondary-accent);
   font-size: 0.9rem;
   font-weight: 500;
   padding: 0.4rem 0.85rem;
@@ -511,12 +518,12 @@ header.navbar {
   width: 52px;
   height: 52px;
   margin: 0 auto 1.25rem;
-  background: var(--accent-tint);
+  background: var(--secondary-accent-tint);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent);
+  color: var(--secondary-accent);
 }
 
 .guarantee-title {
@@ -859,7 +866,7 @@ header.navbar {
   border: none;
   cursor: pointer;
   transition: var(--transition-fast);
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.25);
+  box-shadow: 0 4px 14px rgba(4, 12, 58, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;

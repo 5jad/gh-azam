@@ -1,12 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <linearGradient id="favGold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f5e0a3"/>
-      <stop offset="50%" stop-color="#d4af37"/>
-      <stop offset="100%" stop-color="#8a671c"/>
+    <linearGradient id="bronzeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#807b5e"/>
+      <stop offset="50%" stop-color="#5d5943"/>
+      <stop offset="100%" stop-color="#434030"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="#121214"/>
-  <circle cx="32" cy="32" r="24" fill="none" stroke="url(#favGold)" stroke-width="2"/>
-  <text x="32" y="42" font-family="'Tajawal', serif" font-size="28" font-weight="bold" fill="url(#favGold)" text-anchor="middle">A</text>
+  <!-- Background in Deep Royal Navy #040c3a -->
+  <rect width="64" height="64" rx="16" fill="#040c3a"/>
+  <!-- Thin luxury border in Warm Bronze -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="none" stroke="url(#bronzeGrad)" stroke-width="1.5" stroke-opacity="0.6"/>
+  <!-- Inner circular ring -->
+  <circle cx="32" cy="32" r="23" fill="none" stroke="url(#bronzeGrad)" stroke-width="1.2" stroke-opacity="0.45"/>
+  <!-- Monogram 'ع' for عطور عزام -->
+  <text x="32" y="40" font-family="'IBM Plex Sans Arabic', 'Tajawal', sans-serif" font-size="26" font-weight="600" fill="#ffffff" text-anchor="middle">ع</text>
+  <!-- Subtle accent dot in Warm Bronze -->
+  <circle cx="32" cy="18" r="2" fill="url(#bronzeGrad)"/>
 </svg>
