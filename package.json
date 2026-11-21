@@ -1,0 +1,22 @@
+{
+  "name": "perfume-landing-worker",
+  "version": "1.0.0",
+  "description": "Single-Product Perfume Landing Page (Arabic/RTL) with Meta Pixel + Conversions API, D1, Admin Panel",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "migrate:local": "wrangler d1 migrations apply DB --local",
+    "migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "test": "node scripts/test-acceptance.mjs"
+  },
+  "dependencies": {
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241230.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^3.99.0"
+  }
+}

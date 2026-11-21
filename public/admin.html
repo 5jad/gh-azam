@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>لوحة التحكم | عطور عزام الشمري</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-alt: #f5f5f7;
+      --surface: #ffffff;
+      --text: #1d1d1f;
+      --text-sec: #6e6e73;
+      --border: rgba(0,0,0,.08);
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --success: #34c759;
+      --warning: #ff9f0a;
+      --danger: #ff3b30;
+      --info: #5856d6;
+      --radius-card: 18px;
+      --radius-btn: 980px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+      --font: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-alt);
+      color: var(--text);
+      direction: rtl;
+      text-align: right;
+      min-height: 100vh;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    button, input, select, textarea { font-family: inherit; font-size: 15px; }
+    button { cursor: pointer; }
+
+    /* ── Layout ── */
+    .admin-wrap { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+    /* ── Login ── */
+    .login-screen {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-alt);
+    }
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 2.5rem 2rem;
+      width: 100%; max-width: 380px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .login-card h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: .25rem; }
+    .login-card p { color: var(--text-sec); font-size: .9rem; margin-bottom: 1.5rem; }
+
+    .field { margin-bottom: 1rem; text-align: right; }
+    .field label { display: block; font-size: .85rem; color: var(--text-sec); margin-bottom: .35rem; font-weight: 600; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .65rem .9rem;
+      background: var(--bg-alt);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); background: #fff; }
+    .field textarea { resize: vertical; min-height: 80px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      border: none; border-radius: var(--radius-btn);
+      padding: .6rem 1.4rem;
+      font-weight: 600; font-size: .9rem;
+      transition: background .2s, opacity .2s;
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary { background: var(--bg-alt); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #e8e8ed; }
+    .btn-danger-soft { background: rgba(255,59,48,.1); color: var(--danger); }
+    .btn-danger-soft:hover { background: rgba(255,59,48,.18); }
+    .btn-success-soft { background: rgba(52,199,89,.1); color: #1a7f3c; }
+    .btn-success-soft:hover { background: rgba(52,199,89,.18); }
+    .btn-warning-soft { background: rgba(255,159,10,.1); color: #835c00; }
+    .btn-sm { padding: .35rem .9rem; font-size: .82rem; }
+    .btn:disabled { opacity: .45; pointer-events: none; }
+    .btn-block { width: 100%; justify-content: center; }
+
+    /* ── Header ── */
+    .admin-header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: .9rem 1.5rem;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .admin-header .brand { font-weight: 600; font-size: 1rem; }
+    .admin-header .header-actions { display: flex; gap: .6rem; align-items: center; }
+
+    /* ── Stats ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: .75rem; margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-card); padding: 1.1rem 1.25rem;
+    }
+    .stat-label { font-size: .78rem; color: var(--text-sec); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .stat-value { font-size: 1.75rem; font-weight: 300; color: var(--text); margin-top: .15rem; }
+    .stat-card.accent .stat-value { color: var(--accent); }
+    .stat-card.success .stat-value { color: var(--success); }
+    .stat-card.warning .stat-value { color: var(--warning); }
+
+    /* ── Tab Nav ── */
+    .tab-nav {
+      display: flex; gap: .25rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-btn);
+      padding: .25rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      width: fit-content;
+      max-width: 100%;
+    }
+    .tab-btn {
+      border: none; background: transparent; color: var(--text-sec);
+      border-radius: 980px; padding: .45rem 1.1rem;
+      font-size: .88rem; font-weight: 600;
+      white-space: nowrap; transition: background .2s, color .2s;
+    }
+    .tab-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    .card-header h2 { font-size: 1rem; font-weight: 600; }
+    .card-body { padding: 1.25rem; }
+
+    /* ── Orders controls ── */
+    .orders-controls {
+      display: flex; flex-wrap: wrap; gap: .6rem; align-items: center;
+      padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    }
+    .orders-controls input[type="text"],
+    .orders-controls select,
+    .orders-controls input[type="date"] {
+      border: 1px solid var(--border);
+      border-radius: 980px;
+      padding: .4rem .9rem;
+      background: var(--bg-alt);
+      color: var(--text);
+      outline: none;
+      font-size: .85rem;
+    }
+    .orders-controls input[type="text"]:focus,
+    .orders-controls select:focus { border-color: var(--accent); }
+    .orders-controls input[type="text"] { min-width: 180px; }
+
+    /* ── Status Pills ── */
+    .pill {
+      display: inline-block; border-radius: 980px; padding: .25em .75em;
+      font-size: .8rem; font-weight: 600;
+    }
+    .pill-new      { background: rgba(0,113,227,.1); color: #004a99; }
+    .pill-confirmed{ background: rgba(88,86,214,.1); color: #3634a3; }
+    .pill-shipped  { background: rgba(255,159,10,.12); color: #835c00; }
+    .pill-delivered{ background: rgba(52,199,89,.12); color: #1a7f3c; }
+    .pill-cancelled{ background: rgba(255,59,48,.1); color: #c0392b; }
+    .pill-synced   { background: rgba(52,199,89,.1); color: #1a7f3c; }
+    .pill-pending  { background: rgba(255,159,10,.1); color: #835c00; }
+    .pill-failed   { background: rgba(255,59,48,.1); color: #c0392b; }
+
+    /* ── Orders Table ── */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    th {
+      text-align: right; padding: .7rem 1rem;
+      background: var(--bg-alt); color: var(--text-sec);
+      font-size: .78rem; font-weight: 600; white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: .75rem 1rem; border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg-alt); }
+
+    /* Mobile order cards */
+    .order-cards { display: none; }
+    @media (max-width: 700px) {
+      .table-wrap { display: none; }
+      .order-cards { display: flex; flex-direction: column; gap: .75rem; padding: .75rem; }
+      .order-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 1rem;
+      }
+      .order-card-header { display: flex; justify-content: space-between; align-items: start; gap: .5rem; margin-bottom: .6rem; }
+      .order-card-code { font-weight: 600; font-size: .95rem; }
+      .order-card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: .35rem; font-size: .88rem; }
+      .order-card-label { color: var(--text-sec); }
+      .order-card-actions { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--border); }
+    }
+
+    /* ── Pagination ── */
+    .pagination { display: flex; justify-content: space-between; align-items: center; padding: .9rem 1.25rem; }
+    .pagination-info { font-size: .85rem; color: var(--text-sec); }
+    .pagination-btns { display: flex; gap: .4rem; }
+
+    /* ── Forms & Sections ── */
+    .section-title { font-size: .9rem; font-weight: 600; color: var(--text-sec); margin-bottom: .75rem; padding-bottom: .4rem; border-bottom: 1px solid var(--border); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* Toggle */
+    .toggle-wrap { display: flex; align-items: center; gap: .6rem; }
+    .toggle { position: relative; width: 44px; height: 26px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0; background: #ccc; border-radius: 980px;
+      cursor: pointer; transition: background .2s;
+    }
+    .toggle-track::after {
+      content: ''; position: absolute; left: 3px; top: 3px;
+      width: 20px; height: 20px; border-radius: 50%; background: #fff;
+      transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .toggle input:checked ~ .toggle-track { background: var(--accent); }
+    .toggle input:checked ~ .toggle-track::after { transform: translateX(18px); }
+
+    /* Chips */
+    .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .4rem; }
+    .chip {
+      background: rgba(0,113,227,.08); color: var(--accent);
+      border-radius: 980px; padding: .2em .65em; font-size: .8rem; font-weight: 600;
+    }
+
+    /* Discount table */
+    .discount-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .4rem; }
+    .discount-row input { width: 90px; }
+
+    /* Reviews list */
+    .review-row {
+      display: flex; justify-content: space-between; align-items: start;
+      padding: .6rem 0; border-bottom: 1px solid var(--border);
+    }
+    .review-row:last-child { border-bottom: none; }
+    .review-name { font-weight: 600; font-size: .9rem; }
+    .review-text { font-size: .88rem; color: var(--text-sec); }
+
+    /* Image upload */
+    .img-grid { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: .75rem; }
+    .img-thumb {
+      position: relative; width: 90px; height: 90px;
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+    }
+    .img-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .img-thumb-actions { position: absolute; bottom: 0; left: 0; right: 0; display: flex; gap: 2px; padding: 3px; background: rgba(0,0,0,.45); }
+    .img-thumb-actions button { flex: 1; border: none; border-radius: 4px; background: rgba(255,255,255,.85); font-size: .7rem; padding: 2px 0; cursor: pointer; }
+    .img-upload-box {
+      border: 2px dashed var(--border); border-radius: 14px;
+      padding: 1.5rem; text-align: center; color: var(--text-sec);
+      cursor: pointer; transition: border-color .2s;
+      font-size: .9rem;
+    }
+    .img-upload-box:hover { border-color: var(--accent); }
+    .img-upload-box input { display: none; }
+
+    /* Settings */
+    .danger-zone {
+      border: 1px solid rgba(255,59,48,.25); border-radius: var(--radius-card);
+      padding: 1.25rem;
+      background: rgba(255,59,48,.03);
+    }
+    .danger-zone h3 { color: var(--danger); font-size: 1rem; margin-bottom: .5rem; }
+    .danger-zone p { color: var(--text-sec); font-size: .88rem; margin-bottom: 1rem; }
+
+    /* Toast */
+    .toast-container { position: fixed; bottom: 1.5rem; right: 50%; transform: translateX(50%); z-index: 9999; display: flex; flex-direction: column; gap: .5rem; align-items: center; pointer-events: none; }
+    .toast {
+      background: var(--text); color: #fff;
+      border-radius: var(--radius-btn); padding: .6rem 1.2rem;
+      font-size: .88rem; font-weight: 600;
+      animation: toastIn .2s ease; pointer-events: none;
+      max-width: 90vw; text-align: center;
+    }
+    .toast.success { background: #1a7f3c; }
+    .toast.error { background: var(--danger); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Note textarea */
+    .note-textarea { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: .5rem .75rem; font-size: .88rem; resize: vertical; min-height: 60px; }
+
+    /* Loading skeleton */
+    .skeleton { background: linear-gradient(90deg, var(--bg-alt) 25%, #e8e8ed 50%, var(--bg-alt) 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 8px; height: 1em; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* Sound toggle */
+    .sound-wrap { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--text-sec); }
+  </style>
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="view-login" class="login-screen" style="display:none;">
+  <div class="login-card">
+    <h1>🔐 لوحة التحكم</h1>
+    <p id="store-name-login">عطور عزام الشمري</p>
+    <form id="login-form">
+      <div class="field">
+        <label>كلمة المرور</label>
+        <input type="password" id="login-password" autocomplete="current-password" placeholder="أدخل كلمة المرور" required>
+      </div>
+      <div id="login-error" style="color:var(--danger);font-size:.85rem;margin-bottom:.75rem;display:none;"></div>
+      <button type="submit" class="btn btn-primary btn-block">دخول</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="view-dashboard" style="display:none;">
+
+  <!-- Sticky Header -->
+  <header class="admin-header">
+    <div class="brand" id="header-store-name">لوحة التحكم</div>
+    <div class="header-actions">
+      <div class="sound-wrap">
+        <label class="toggle" title="صوت تنبيه طلب جديد">
+          <input type="checkbox" id="sound-alert-toggle" checked>
+          <span class="toggle-track"></span>
+        </label>
+        <span>🔔</span>
+      </div>
+      <a href="/" target="_blank" class="btn btn-secondary btn-sm">معاينة الموقع</a>
+      <button id="btn-logout" class="btn btn-secondary btn-sm">خروج</button>
+    </div>
+  </header>
+
+  <div class="admin-wrap">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">إجمالي الطلبات</div>
+        <div class="stat-value" id="stat-total">0</div>
+      </div>
+      <div class="stat-card warning">
+        <div class="stat-label">طلبات جديدة</div>
+        <div class="stat-value" id="stat-new">0</div>
+      </div>
+      <div class="stat-card success">
+        <div class="stat-label">مسلّمة</div>
+        <div class="stat-value" id="stat-delivered">0</div>
+      </div>
+      <div class="stat-card accent">
+        <div class="stat-label">قيمة المبيعات (د.ع)</div>
+        <div class="stat-value" id="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">المخزون المتبقي</div>
+        <div class="stat-value" id="stat-stock">—</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="orders">📦 الطلبات</button>
+      <button class="tab-btn" data-tab="product">🏷️ المنتج</button>
+      <button class="tab-btn" data-tab="settings">⚙️ الإعدادات</button>
+    </div>
+
+    <!-- ══ TAB: ORDERS ══ -->
+    <div id="tab-orders" class="tab-panel active">
+      <div class="card">
+        <div class="orders-controls">
+          <input type="text" id="filter-search" placeholder="🔍 بحث بالاسم أو الهاتف أو الرمز…">
+          <select id="filter-status">
+            <option value="all">جميع الحالات</option>
+            <option value="new">جديد</option>
+            <option value="confirmed">تم التأكيد</option>
+            <option value="shipped">مشحون</option>
+            <option value="delivered">مسلّم</option>
+            <option value="cancelled">ملغي</option>
+          </select>
+          <input type="date" id="filter-start" title="من تاريخ">
+          <input type="date" id="filter-end" title="إلى تاريخ">
+          <div style="margin-inline-start:auto; display:flex; gap:.5rem; flex-wrap:wrap;">
+            <button class="btn btn-secondary btn-sm" id="btn-resync-all">🔄 مزامنة كل الطلبات</button>
+            <a href="/api/admin/export.csv" class="btn btn-secondary btn-sm" id="btn-export">⬇️ تصدير CSV</a>
+          </div>
+        </div>
+
+        <!-- Desktop Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الرمز</th>
+                <th>التاريخ</th>
+                <th>العميل</th>
+                <th>الهاتف</th>
+                <th>المحافظة</th>
+                <th>المنتجات</th>
+                <th>المجموع</th>
+                <th>الحالة</th>
+                <th>Sheets</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody">
+              <tr><td colspan="10" style="text-align:center;color:var(--text-sec);padding:2rem;">جارٍ التحميل…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="order-cards" id="orders-cards"></div>
+
+        <div class="pagination">
+          <span class="pagination-info" id="pagination-info">0 طلب</span>
+          <div class="pagination-btns">
+            <button class="btn btn-secondary btn-sm" id="btn-prev" disabled>السابق</button>
+            <button class="btn btn-secondary btn-sm" id="btn-next" disabled>التالي</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: PRODUCT ══ -->
+    <div id="tab-product" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2>بيانات المنتج</h2>
+          <div style="display:flex;gap:.5rem;">
+            <button class="btn btn-primary btn-sm" id="btn-save-product">حفظ التغييرات</button>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <!-- Basic -->
+          <div class="section-title">معلومات أساسية</div>
+          <div class="field">
+            <label>حالة المنتج</label>
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="prod-active">
+                <span class="toggle-track"></span>
+              </label>
+              <span id="prod-active-label">غير نشط</span>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>اسم العطر (بالعربي)</label>
+              <input type="text" id="prod-name" placeholder="مثال: عطر الملكي">
+            </div>
+            <div class="field">
+              <label>الجملة التعريفية (tagline)</label>
+              <input type="text" id="prod-tagline" placeholder="جملة قصيرة جذابة">
+            </div>
+          </div>
+          <div class="field">
+            <label>الوصف التفصيلي</label>
+            <textarea id="prod-desc" rows="4" placeholder="وصف العطر، المكونات، الاستخدام…"></textarea>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>السعر (د.ع)</label>
+              <input type="number" id="prod-price" placeholder="45000" min="0">
+            </div>
+            <div class="field">
+              <label>السعر القديم — مشطوب (اختياري)</label>
+              <input type="number" id="prod-compare-price" placeholder="60000" min="0">
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>المخزون (قطع)</label>
+              <input type="number" id="prod-stock" placeholder="50" min="0">
+            </div>
+            <div class="field">
+              <label>الحجم (مل)</label>
+              <input type="number" id="prod-size" placeholder="100" min="0">
+            </div>
+          </div>
+
+          <!-- Scent Notes -->
+          <div class="section-title" style="margin-top:1.5rem;">نوتات العطر</div>
+          <div class="field">
+            <label>نوتات القمة (top notes) — مفصولة بفاصلة</label>
+            <input type="text" id="prod-notes-top" placeholder="bergamot, lemon, grapefruit">
+            <div class="chips" id="chips-top"></div>
+          </div>
+          <div class="field">
+            <label>نوتات القلب (heart notes)</label>
+            <input type="text" id="prod-notes-heart" placeholder="rose, jasmine, oud">
+            <div class="chips" id="chips-heart"></div>
+          </div>
+          <div class="field">
+            <label>نوتات القاعدة (base notes)</label>
+            <input type="text" id="prod-notes-base" placeholder="sandalwood, musk, amber">
+            <div class="chips" id="chips-base"></div>
+          </div>
+
+          <!-- Guarantee -->
+          <div class="section-title" style="margin-top:1.5rem;">ضمان وشروط</div>
+          <div class="two-col">
+            <div class="field">
+              <label>مدة الاستبدال (أيام)</label>
+              <input type="number" id="prod-return-days" placeholder="3" min="0">
+            </div>
+            <div class="field">
+              <label>حالة التوصيل المجاني</label>
+              <div class="toggle-wrap" style="margin-top:.6rem;">
+                <label class="toggle">
+                  <input type="checkbox" id="prod-free-delivery">
+                  <span class="toggle-track"></span>
+                </label>
+                <span>توصيل مجاني</span>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>نص ملاحظة التوصيل (اختياري)</label>
+            <input type="text" id="prod-delivery-note" placeholder="مثال: خلال 1-3 أيام عمل">
+          </div>
+          <div class="field">
+            <label>نص الضمان (اختياري — سيظهر في قسم الضمان بالصفحة)</label>
+            <textarea id="prod-guarantee" rows="3" placeholder="نضمن ثبات العطر وفوحانه لمدة…"></textarea>
+          </div>
+
+          <!-- Quantity Discounts -->
+          <div class="section-title" style="margin-top:1.5rem;">خصومات الكمية (اختياري)</div>
+          <div id="discounts-list"></div>
+          <button class="btn btn-secondary btn-sm" id="btn-add-discount">+ إضافة خصم</button>
+
+          <!-- Reviews -->
+          <div class="section-title" style="margin-top:1.5rem;">مراجعات العملاء</div>
+          <div id="reviews-list"></div>
+          <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap;">
+            <input type="text" id="new-review-name" placeholder="اسم العميل" style="border:1px solid var(--border);border-radius:8px;padding:.4rem .7rem;width:160px;">
+            <input type="number" id="new-review-stars" placeholder="تقييم 1-5" min="1" max="5" style="border:1px solid var(--border);border-radius:8px;padding:.4rem .7rem;width:100px;">
+            <input type="text" id="new-review-text" placeholder="نص المراجعة" style="border:1px solid var(--border);border-radius:8px;padding:.4rem .7rem;flex:1;min-width:160px;">
+            <button class="btn btn-secondary btn-sm" id="btn-add-review">+ إضافة</button>
+          </div>
+
+          <!-- Images -->
+          <div class="section-title" style="margin-top:1.5rem;">صور المنتج (بحد أقصى 8)</div>
+          <div class="img-grid" id="img-grid"></div>
+          <label class="img-upload-box" id="img-upload-label">
+            <input type="file" id="img-upload-input" accept="image/*" multiple>
+            <div>📷 انقر لرفع الصور أو اسحبها هنا</div>
+            <div style="font-size:.8rem;margin-top:.3rem;">سيتم ضغطها تلقائياً إلى WebP (أقصى 1200px، 400KB)</div>
+          </label>
+          <div id="img-upload-status" style="font-size:.85rem;color:var(--text-sec);margin-top:.5rem;"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TAB: SETTINGS ══ -->
+    <div id="tab-settings" class="tab-panel">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-header"><h2>إعدادات المتجر</h2></div>
+        <div class="card-body">
+          <div class="field">
+            <label>اسم المتجر</label>
+            <input type="text" id="settings-store-name" placeholder="عطور عزام الشمري">
+          </div>
+          <div class="field">
+            <label>واتساب</label>
+            <div class="toggle-wrap" style="margin-bottom:.5rem;">
+              <label class="toggle">
+                <input type="checkbox" id="settings-wa-enabled">
+                <span class="toggle-track"></span>
+              </label>
+              <span>تفعيل زر الواتساب في الصفحة</span>
+            </div>
+            <input type="text" id="settings-wa-number" placeholder="9647xxxxxxx" style="border:1px solid var(--border);border-radius:8px;padding:.5rem .75rem;width:100%;max-width:260px;">
+          </div>
+          <button class="btn btn-primary btn-sm" id="btn-save-settings">حفظ الإعدادات</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-header"><h2>مزامنة Google Sheets</h2></div>
+        <div class="card-body">
+          <div style="margin-bottom:.75rem;" id="sheets-status-msg">جارٍ التحقق…</div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <button class="btn btn-secondary btn-sm" id="btn-sheets-ping">🔌 اختبار الاتصال</button>
+            <button class="btn btn-secondary btn-sm" id="btn-sheets-resync">🔄 مزامنة كل الطلبات</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="danger-zone">
+        <h3>⚠️ منطقة الخطر</h3>
+        <p>حذف جميع طلبات التجربة (لا يمكن التراجع). اكتب <strong>حذف الطلبات</strong> للتأكيد.</p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
+          <input type="text" id="danger-confirm-text" placeholder="اكتب: حذف الطلبات" style="border:1px solid rgba(255,59,48,.3);border-radius:8px;padding:.5rem .75rem;">
+          <input type="number" id="danger-reset-stock" placeholder="إعادة المخزون إلى… (اختياري)" style="border:1px solid var(--border);border-radius:8px;padding:.5rem .75rem;width:220px;">
+          <button class="btn btn-danger-soft btn-sm" id="btn-danger-wipe">حذف الطلبات</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-wrap -->
+</div><!-- /view-dashboard -->
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="/admin.js" defer></script>
+</body>
+</html>

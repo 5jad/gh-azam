@@ -1,0 +1,20 @@
+# Cloudflare Turnstile Secret Key (from Cloudflare Dashboard -> Turnstile -> Mode: Invisible)
+# For local testing, 1x0000000000000000000000000000000AA always passes
+TURNSTILE_SECRET="1x0000000000000000000000000000000AA"
+
+# Meta Conversions API (CAPI) Access Token
+# Obtain from Meta Events Manager -> Settings -> Conversions API -> Generate access token
+META_ACCESS_TOKEN="EAAxxxxxxx..."
+
+# Optional: Meta Test Event Code (from Events Manager -> Test Events tab)
+META_TEST_EVENT_CODE=""
+
+# Admin Dashboard Password (change to a strong password)
+ADMIN_PASSWORD="ChangeMeToAStrongPassword123!"
+
+# Admin Session Secret for HMAC cookie signing (at least 32 random characters)
+SESSION_SECRET="super-secret-hmac-key-min-32-chars-long-123456"
+
+# Google Sheets Sync Webhook (from Google Apps Script Deployment -> Web App URL)
+SHEETS_WEBHOOK_URL=""
+SHEETS_WEBHOOK_TOKEN=""
